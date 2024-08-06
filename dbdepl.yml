@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: vprodb
+  labels:
+    app: vprodb
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: vprodbpods
+  template:
+    metadata:
+      name: vprodbpods
+      labels:
+        app: vprodbpods
+    spec:
+      containers:
+        - name: vprodbcontainer
+          image: vprofile/vprofiledb:V1
+          ports:
+            - name: vprodbport
+              containerPort: 3306
+          envFrom:
+            - secretRef:
+                name: app-secret
+      nodeSelector:
+        db: yes
